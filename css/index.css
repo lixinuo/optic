@@ -33,8 +33,8 @@ i { background:url(../images/tubiao.png) no-repeat; display:block; overflow:hidd
 .nav_main { width:160px; padding-left:50px; color:#fff; background-color:#6d9d03; position:relative; z-index:1000;}
 .nav_main .nav_all { width:14px; height:12px; position:absolute; background-position:0 -124px; top:12px; right:35px;}
 .nav_main:hover .category_info { display:block;}
-.category_info { display:block; width:210px; height:320px; position:absolute; top:35px; left:0; z-index:200;}
-.category_info li { height:45px; line-height:46px; background-color:#fff; color:#cbcbcb; border-bottom:1px #CCC dotted;}
+.category_info { display:block; width:210px; height:315px; position:absolute; top:35px; left:0; z-index:200;}
+.category_info li { height:44px; line-height:45px; background-color:#fff; color:#cbcbcb; border-bottom:1px #CCC dotted;}
 .category_info .list_icon { width:30px; height:30px; overflow:hidden; margin:7px 5px 0 20px;}
 .icon_img1 { background-position:0 -414px;}
 .icon_img2 { background-position:0 -453px;}
@@ -51,13 +51,26 @@ i { background:url(../images/tubiao.png) no-repeat; display:block; overflow:hidd
 .item li:hover,.item .select { background-color:#77b001;}
 /*导航结束*/
 
-.wide_banner_bg { height:320px; width:100%; background-color:red;}
-.content { width:1200px; height:320px; margin:0 auto;}
-.wide_banner { width:760px; height:320px; position:relative; left:210px;}
-.wide_banner .pic { width:760px; height:320px; overflow:hidden;}
-.wide_banner .pic li a img { display:block; height:320px; width:760px;}
-.pic_icon { position:absolute; bottom:8px; left:320px; background-color:#333; border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px; opacity:0.7; filter: alpha(opacity=50);}
+.wide_banner_bg { height:315px; width:100%; background-color:red;}
+.content { width:1200px; height:315px; margin:0 auto;}
+.wide_banner { width:760px; height:315px; position:relative; left:210px;}
+.wide_banner .pic { width:760px; height:315px; overflow:hidden;}
+.wide_banner .pic li a img { display:block; height:315px; width:760px;}
+.pic_icon { position:absolute; bottom:8px; left:315px; background-color:#333; border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px; opacity:0.7; filter: alpha(opacity=50);}
 .pic_icon li { float:left; height:12px; width:12px; cursor:pointer; margin:4px; background:#fff; border-radius:20px; -moz-border-radius:20px; -webkit-border-radius:20px;}
+/*轮播图结束*/
+
+.tradeMark { width:1200px; height:111px; margin:20px auto; background-color:#ccc;}
+.tradeMark li { float:left; width:100px; height:46px; margin:1px 0 0 1px; background-color:#fff; padding:4px;}
+.tradeMark li:hover { background-color:#f4f4f4;}
+.tradeMark li a { display:inline-block; height:46px; width:99px; background:url(../images/brand.jpg) no-repeat; background-position:0 0;}
+
+
+
+
+
+
+
 
 
 
