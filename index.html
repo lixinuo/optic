@@ -17,7 +17,7 @@
             <a href="#" target="_self">[免费注册]</a>
         </div>
         <div class="right">
-        	<span class="head_help">
+        	<div class="head_help">
             	<a href="#" target="_blank">帮助中心</a>
                 <i></i>
                 <ul class="head_item">
@@ -25,7 +25,7 @@
                     <li><a href="#" target="_blank">眼镜学堂</a></li>
                     <li><a href="#" target="_blank">网址地图</a></li>
                 </ul>
-            </span>
+            </div>
             <span class="head_tel">
             	<i></i>
                 <a href="#">联系电话：XXXXXXXXX</a>
@@ -180,22 +180,23 @@
     <li><a href="#"></a></li>
     <li><a href="#"></a></li>
 </ul>
-
-
 <!--商标结束-->
+
+
 
 
 <script type="text/javascript">
 var bannerList = $('.pic li'),  //图片列表
 	picIcon = $('.pic_icon li'), //图片导航列表
 	tradeMark = $('.tradeMark li'), //商标
+    time1,
 	index = 0;
 
 $(function(){
 	autoPlay();    //自动播放图片
 	mouseoverPic();   //鼠标移入图片改变
 	for(var i = 0; i<tradeMark.length; i++){
-		positionY = -(46*i) + 'px';
+		var positionY = -(46*i) + 'px';
 		$(tradeMark[i]).find('a').css('background-positionY',positionY);	
 	}
 	
@@ -207,8 +208,11 @@ function mouseoverPic(){   //鼠标移入图片改变
 			$(picIcon[i]).css('background-color','#fff');
 		} //去掉所有样式背景
 		$(this).css('background-color','#94c51b');
-		showPlay($(this).index())
-	});	
+		showPlay($(this).index());
+        clearTimeout(time1);
+	}).on('mouseout',function(){
+        time1 = setTimeout(autoPlay, 2000);  //每过5s调用函数
+    });
 }
 
 function autoPlay(){  //自动播放图片
@@ -217,11 +221,11 @@ function autoPlay(){  //自动播放图片
 	}
 	showPlay(index);
 	//index++;  //index自增
-	setTimeout(autoPlay, 8000);  //每过5s调用函数
+    time1 = setTimeout(autoPlay, 5000);  //每过5s调用函数
 }
 
 function showPlay(showIndex){   //自动播放图片
-	bannerList.each(function(index, element) {
+	bannerList.each(function(index) {
 		if(index == showIndex){
 			$(this).fadeIn('slow');
 			$('.wide_banner_bg').css('background-color',$(this).css('background-color'));
