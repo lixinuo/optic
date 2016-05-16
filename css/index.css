@@ -64,12 +64,19 @@ i { background:url(../images/tubiao.png) no-repeat; display:block; overflow:hidd
 .tradeMark li { float:left; width:100px; height:46px; margin:1px 0 0 1px; background-color:#fff; padding:4px;}
 .tradeMark li:hover { background-color:#f4f4f4;}
 .tradeMark li a { display:inline-block; height:46px; width:99px; background:url(../images/brand.jpg) no-repeat; background-position:0 0;}
+/*商标结束*/
 
-
-
-
-
-
+.wide_f_main { margin: 20px auto 0 auto; width:1200px;}
+.wide_f_title { float:left; width:100%; border-bottom:3px solid #72b7fc;}
+.wide_f_title li { float:left; height:27px; line-height:27px;}
+.wide_title { width:210px; font-size:19px; font-weight:normal; line-height:22px; color:#72b7fc;}
+.wide_delicacy,.wide_hot { width:475px; color:#666; overflow:hidden; }
+.wide_f_title a { color:#666;}
+.wide_f_title a:hover { color:#fe6809;}
+.wide_more a{ display:block; width:40px;}
+.wide_more a i { float:right; margin-top:7px; height:13px; width:13px; background-position:0 -727px;}
+.wide_f_left { float:left; height:720px; width:210px; overflow:hidden;}
+.wide_f_ban { width:210px; height:360px;}
 
 
 
