@@ -57,7 +57,8 @@ i { background:url(../images/tubiao.png) no-repeat; display:block; overflow:hidd
 .wide_banner .pic { width:760px; height:315px; overflow:hidden;}
 .wide_banner .pic li a img { display:block; height:315px; width:760px;}
 .pic_icon { position:absolute; bottom:8px; left:315px; background-color:#333; border-radius:30px; -moz-border-radius:30px; -webkit-border-radius:30px; opacity:0.7; filter: alpha(opacity=50);}
-.pic_icon li { float:left; height:12px; width:12px; cursor:pointer; margin:4px; background:#fff; border-radius:20px; -moz-border-radius:20px; -webkit-border-radius:20px;}
+.pic_icon li { float:left; height:12px; width:12px; cursor:pointer; margin:4px; border-radius:20px; background-color:#fff; -moz-border-radius:20px; -webkit-border-radius:20px;}
+.pic_icon li.changebg { background-color:#90c221;}
 /*轮播图结束*/
 
 .tradeMark { width:1200px; height:111px; margin:20px auto; background-color:#ccc;}
@@ -77,10 +78,14 @@ i { background:url(../images/tubiao.png) no-repeat; display:block; overflow:hidd
 .wide_more a i { float:right; margin-top:7px; height:13px; width:13px; background-position:0 -727px;}
 .wide_f_left { float:left; height:720px; width:210px; overflow:hidden;}
 .wide_f_ban { width:210px; height:360px;}
-
-
-
-
+.infcp_f_left { width:210px; height:360px; overflow:hidden;}
+.wide_infcp { position:relative;}
+.wide_infcp ul { position:absolute;}
+.wide_infcp ul li { float:left;}
+.infcp { width:10000px;}
+.wide_f_left .infcp_ban { bottom:10px; left:63px;}
+.infcp_ban li { float:left; height:5px; width:40px; margin-right:2px; background-color:#666; cursor:pointer; overflow:hidden;}
+.infcp_ban li.changebg { background-color:#90c221;}
 
 
 

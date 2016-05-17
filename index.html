@@ -208,9 +208,19 @@
     </ul>
 	<div class="wide_f_left">
     	<div class="wide_f_ban">
-        	<div>
-            
-            
+        	<div class="wide_infcp infcp_f_left">
+            	<ul class="infcp">
+                	<li>
+                    	<a href="#"><img src="images/1f_left1.jpg" alt="博士伦纯视超长配戴型月抛隐形眼镜3片装"></a>
+                    </li>
+                    <li>
+                    	<a href="#"><img src="images/1f_left2.jpg" alt="强生舒日隐形眼镜日抛30片装"></a>
+                    </li>
+                </ul>
+            	<ul class="infcp_ban">
+                	<li></li>
+                    <li></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -223,12 +233,16 @@
 var bannerList = $('.pic li'),  //图片列表
 	picIcon = $('.pic_icon li'), //图片导航列表
 	tradeMark = $('.tradeMark li'), //商标
-    time1,
-	index = 0;
+    banTime,
+	time1,
+	index1 =0,
+	banIndex = 0;
 
 $(function(){
 	autoPlay();    //自动播放图片
 	mouseoverPic();   //鼠标移入图片改变
+	fPicChange();
+	//fmouseoverPic();
 	for(var i = 0; i<tradeMark.length; i++){
 		var positionY = -(46*i) + 'px';
 		$(tradeMark[i]).find('a').css('background-positionY',positionY);	
@@ -236,40 +250,72 @@ $(function(){
 	
 });
 
-function mouseoverPic(){   //鼠标移入图片改变
-	picIcon.on('mouseover',function(){
-		for(var i = 0 ; i < picIcon.length ; i++){
-			$(picIcon[i]).css('background-color','#fff');
-		} //去掉所有样式背景
-		$(this).css('background-color','#94c51b');
-		showPlay($(this).index());
-        clearTimeout(time1);
+//楼层里面图片切换
+function fPicChange(){
+	var infcp = $('.infcp li');
+	var infcpLen = infcp.length,
+		imgWid = parseInt($('.infcp li a img').css('width'));  //获取img宽度
+	if(index1 >= infcpLen){
+		index1 = 0;	
+	}
+	fshowPlay(index1,imgWid);
+	time1 = setTimeout(fPicChange,4000);
+}
+function fmouseoverPic(){
+	var imgWid = parseInt($($('.infcp li a img')[0]).css('width'));  //获取img宽度
+	$('.infcp_ban li').on('mouseover',function(){
+		fshowPlay($(this).index(),imgWid);
+		clearTimeout(time1);
 	}).on('mouseout',function(){
-        time1 = setTimeout(autoPlay, 2000);  //每过5s调用函数
+		time1 = setTimeout(fPicChange,4000);
+	});	
+}
+
+function fshowPlay(showIndex,imgWid){
+	$('.infcp_ban li').each(function(index) {
+        if(showIndex==index){
+			$(this).addClass('changebg');	
+		}else{
+			$(this).removeClass('changebg');	
+		}
+    });	
+	$('.infcp').animate({left:'-' + showIndex*imgWid + 'px'},'slow');
+	index1 = showIndex + 1;
+}
+
+//鼠标移入图片改变
+function mouseoverPic(){   
+	picIcon.on('mouseover',function(){
+		showPlay($(this).index());
+        clearTimeout(banTime);
+	}).on('mouseout',function(){
+        banTime = setTimeout(autoPlay, 5000);  //每过5s调用函数
     });
 }
 
-function autoPlay(){  //自动播放图片
-	if(index >= bannerList.length){ //如果index大于图片数量，index清0
-		index = 0;	
+//自动播放图片
+function autoPlay(){  
+	var banLen = bannerList.length;
+	if(banIndex >= banLen){ //如果index大于图片数量，index清0
+		banIndex = 0;	
 	}
-	showPlay(index);
-	//index++;  //index自增
-    time1 = setTimeout(autoPlay, 5000);  //每过5s调用函数
+	showPlay(banIndex);
+    banTime = setTimeout(autoPlay, 5000);  //每过5s调用函数
 }
 
-function showPlay(showIndex){   //自动播放图片
+//自动播放图片
+function showPlay(showIndex){   
 	bannerList.each(function(index) {
 		if(index == showIndex){
 			$(this).fadeIn('slow');
 			$('.wide_banner_bg').css('background-color',$(this).css('background-color'));
-			$(picIcon[index]).css('background-color','#94c51b');
+			$(picIcon[index]).addClass('changebg');
 		}else{
        		$(this).fadeOut('slow');
-			$(picIcon[index]).css('background-color','#fff');
+			$(picIcon[index]).removeClass('changebg');
 		}
     });
-	index = showIndex + 1; //index自增
+	banIndex = showIndex + 1; //index自增
 }
 
 </script>
