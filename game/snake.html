@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>snake</title>
+    <link rel="stylesheet" type="text/css" href="../css/reset.css">
+    <script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <style>
+        #qq_icon{ position: absolute; top: 40%; right: 0; cursor: pointer;}
+        .main{ width: 1200px; margin: 0 auto; height: 100%; padding: 20px;}
+        .main .head{ padding-bottom: 20px; text-align: center; font-size: 14px;}
+        .main .head select,.main .head input{  margin-right: 10px;}
+        .content{ position: relative; height: 500px; width: 800px; margin: 0 auto; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc;}
+        .content .box { float: left; width: 9px; height: 9px; border: 1px solid #ccc; border-right: 0px; border-bottom: 0px;}
+    </style>
+</head>
+<body>
+    <a id="qq_icon">
+        <img border="0" SRC=http://wpa.qq.com/pa?p=1:465856265:1 alt="点击这里给我发消息" />
+    </a>
+    <div class="main">
+        <div class="head">
+            <span>难度：</span>
+            <select>
+                <option>简单</option>
+                <option>中等</option>
+                <option>困难</option>
+            </select>
+            <input type="button" id="start" value="开始">
+            <input type="button" id="end" value="暂停">
+            <input type="button" id="reStart" value="重新开始">
+            <span id="core">分数</span>
+        </div>
+        <div class="content"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(function(){
+        //点击出现qq聊天框
+        $("#qq_icon").on('click',function(){
+            $("<iframe style='display: none;' src='http://wpa.qq.com/msgrd?v=1&uin=1345801442&site=qq&menu=yes'></iframe>").appendTo($(this));
+        });
+        init();
+
+    });
+
+    var mapH = 50;
+    var mapW = 80;
+    var Snack = {
+        len : 5
+    };
+
+    //地图初始化
+    function init(){
+        var maps = "";
+        for(var i = 0; i < mapH; i++){
+            for(var j = 0; j < mapW; j++){
+                maps += '<div class="box" id="mapIten_+' + j + '_' + i + '"></div>';
+            }
+        }
+        $(".content").html(maps);
+    }
+
+
+</script>
+</html>
