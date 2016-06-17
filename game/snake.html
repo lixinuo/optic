@@ -10,8 +10,10 @@
         .main{ width: 1200px; margin: 0 auto; height: 100%; padding: 20px;}
         .main .head{ padding-bottom: 20px; text-align: center; font-size: 14px;}
         .main .head select,.main .head input{  margin-right: 10px;}
-        .content{ position: relative; height: 500px; width: 800px; margin: 0 auto; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc;}
-        .content .box { float: left; width: 9px; height: 9px; border: 1px solid #ccc; border-right: 0px; border-bottom: 0px;}
+        .content{ position: relative; margin: 0 auto; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc;}
+        .content .box { float: left; width: 9px; height: 9px; border: 1px solid #ccc; border-right: 0; border-bottom: 0;}
+        .bgBlack { background-color: black;}
+        .bgRed { background-color: red;}
     </style>
 </head>
 <body>
@@ -41,24 +43,73 @@
             $("<iframe style='display: none;' src='http://wpa.qq.com/msgrd?v=1&uin=1345801442&site=qq&menu=yes'></iframe>").appendTo($(this));
         });
         init();
+        initSnake();
+        initPrey();
 
     });
 
     var mapH = 50;
     var mapW = 80;
-    var Snack = {
-        len : 5
+    var snake = {
+        len : 5,
+        startPoint : {
+            'x' : 4,
+            'y' : 25,
+            'direction' : 'D'
+        },
+        snakes : []
     };
 
     //地图初始化
     function init(){
         var maps = "";
-        for(var i = 0; i < mapH; i++){
-            for(var j = 0; j < mapW; j++){
-                maps += '<div class="box" id="mapIten_+' + j + '_' + i + '"></div>';
+        $(".content").css({"height" : mapH*10, "width" : mapW*10});
+        for(var i = 0; i < mapH; i++){  //y轴
+            for(var j = 0; j < mapW; j++){  //x轴
+                maps += '<div class="box" id="mapItem_' + j + '_' + i + '"></div>';
             }
         }
         $(".content").html(maps);
+    }
+
+    //初始化蛇
+    function initSnake(){
+        var snakeLen = snake.len;
+        for(var i = 0 ; i < snake.len ; i ++){
+            $("#mapItem_" + i + "_" + snake.startPoint.y).addClass("bgBlack");
+            snakeLen--;
+            snake.snakes[snakeLen] = {};
+            snake.snakes[snakeLen]['x'] = i;
+            snake.snakes[snakeLen]['y'] = snake.startPoint.y;
+            snake.snakes[snakeLen]['d'] = snake.startPoint.direction;
+        }
+        console.log(snake);
+    }
+
+    //初始化吃的
+    function initPrey(){
+        var _x,_y;
+        var _this = this;
+        this.randoms = function () {
+            _x = Math.floor(Math.random()*(mapW-1));
+            _y = Math.floor(Math.random()*(mapH-1));
+            _this.checkPrey();
+        };
+        this.checkPrey = function(){
+            var _e = false;
+            for(var i in snake.snakes){
+                if(snake.snakes[i]['x'] == _x && snake.snakes[i]['y'] == _y){
+                    _e = true;
+                    break;
+                }
+            }
+            if(_e){
+                _this.randoms();
+            }else{
+                $("#mapItem_" + _x + "_" + _y).addClass("bgRed");
+            }
+        };
+        this.randoms();
     }
 
 
