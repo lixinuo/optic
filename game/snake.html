@@ -10,6 +10,8 @@
         .main{ width: 1200px; margin: 0 auto; height: 100%; padding: 20px;}
         .main .head{ padding-bottom: 20px; text-align: center; font-size: 14px;}
         .main .head select,.main .head input{  margin-right: 10px;}
+        .head p { display: inline-block; width: 65px;}
+        .head #core { color: red; width: 20px; text-align: center;}
         .content{ position: relative; margin: 0 auto; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc;}
         .content .box { float: left; width: 9px; height: 9px; border: 1px solid #ccc; border-right: 0; border-bottom: 0;}
         .bgBlack { background-color: black;}
@@ -17,21 +19,21 @@
     </style>
 </head>
 <body>
-    <a id="qq_icon">
+    <!--<a id="qq_icon">
         <img border="0" SRC=http://wpa.qq.com/pa?p=1:465856265:1 alt="点击这里给我发消息" />
-    </a>
+    </a>-->
     <div class="main">
         <div class="head">
             <span>难度：</span>
-            <select>
-                <option>简单</option>
-                <option>中等</option>
-                <option>困难</option>
+            <select id="degree">
+                <option value="500" selected="selected">简单</option>
+                <option value="300" >中等</option>
+                <option value="200">困难</option>
             </select>
             <input type="button" id="start" value="开始">
             <input type="button" id="end" value="暂停">
             <input type="button" id="reStart" value="重新开始">
-            <span id="core">分数</span>
+            <p>分数：<span id="core">0</span></p>
         </div>
         <div class="content"></div>
     </div>
@@ -39,26 +41,53 @@
 <script type="text/javascript">
     $(function(){
         //点击出现qq聊天框
-        $("#qq_icon").on('click',function(){
-            $("<iframe style='display: none;' src='http://wpa.qq.com/msgrd?v=1&uin=1345801442&site=qq&menu=yes'></iframe>").appendTo($(this));
-        });
+        //$("#qq_icon").on('click',function(){
+            //$("<iframe style='display: none;' src='http://wpa.qq.com/msgrd?v=1&uin=1345801442&site=qq&menu=yes'></iframe>").appendTo($(this));
+        //});
         init();
         initSnake();
         initPrey();
+        $("body").on("keydown",keyDirection);
+        //$("body").keydown(keyDirection);
+        $("#start").on("click", function () {
+            if(start === false){
+                start = true;
+                if(degree==""){
+                    degree = $("select").val();
+                }
+                console.log(degree);
+                $("#degree").attr("disabled","true");
+                move();
+            }
+        });
+        $("#end").on("click", function(){
+            start = false;
+            clearTimeout(timer);
+        });
+        $("#reStart").on("click", function(){
+            $("#degree").attr("disabled","false");
+            location.reload();
+        })
 
     });
 
-    var mapH = 50;
-    var mapW = 80;
+    var mapH = 30;
+    var mapW = 40;
     var snake = {
         len : 5,
         startPoint : {
             'x' : 4,
-            'y' : 25,
-            'direction' : 'D'
+            'y' : 15,
         },
+        direction : 'D',
         snakes : []
     };
+    var corner = [];
+    var cornerNum = 0;
+    var preyX,preyY;
+    var timer;
+    var start = false;
+    var degree = "";
 
     //地图初始化
     function init(){
@@ -81,9 +110,9 @@
             snake.snakes[snakeLen] = {};
             snake.snakes[snakeLen]['x'] = i;
             snake.snakes[snakeLen]['y'] = snake.startPoint.y;
-            snake.snakes[snakeLen]['d'] = snake.startPoint.direction;
+            snake.snakes[snakeLen]['d'] = snake.direction;
         }
-        console.log(snake);
+        //console.log(snake);
     }
 
     //初始化吃的
@@ -106,12 +135,194 @@
             if(_e){
                 _this.randoms();
             }else{
+                preyX = _x;
+                preyY = _y;
                 $("#mapItem_" + _x + "_" + _y).addClass("bgRed");
             }
         };
         this.randoms();
     }
+    //移动事件
+    function move(){
+        var _d;
+        //去掉最后一个
+        //console.log(snake);
+        $("#mapItem_" + snake.snakes[snake.len-1]['x'] + "_" + snake.snakes[snake.len-1]['y']).removeClass("bgBlack");
+        for(var i = 0; i < snake.len; i ++){
+            _d = corners(snake.snakes[i]["x"],snake.snakes[i]["y"]);
+            if(_d){
+                snake.snakes[i]["d"] = _d;
+            }
 
+            if(i === snake.len-1 && corner.length > 0){
+                clearCorner(snake.snakes[i]["x"],snake.snakes[i]["y"]);
+            }
+            switch (snake.snakes[i]['d']){
+                case 'D':
+                    if(i===0){
+                        eat(snake.snakes[i]["x"]+1,snake.snakes[i]["y"]);
+                        checkDie(snake.snakes[i]["x"]+1,snake.snakes[i]["y"]);
+                    }
+                    snake.snakes[i]['x'] += 1;
+                    break;
+                case 'S':
+                    if(i===0){
+                        eat(snake.snakes[i]["x"],snake.snakes[i]["y"]+1);
+                        checkDie(snake.snakes[i]["x"],snake.snakes[i]["y"]+1);
+                    }
+                    snake.snakes[i]['y'] += 1;
+                    break;
+                case 'A':
+                    if(i===0){
+                        eat(snake.snakes[i]["x"]-1,snake.snakes[i]["y"]);
+                        checkDie(snake.snakes[i]["x"]-1,snake.snakes[i]["y"]);
+                    }
+                    snake.snakes[i]['x'] -= 1;
+                    break;
+                case 'W':
+                    if(i===0){
+                        eat(snake.snakes[i]["x"],snake.snakes[i]["y"]-1);
+                        checkDie(snake.snakes[i]["x"],snake.snakes[i]["y"]-1);
+                    }
+                    snake.snakes[i]['y'] -= 1;
+                    break;
+            }
+        }
+        $("#mapItem_" + snake.snakes[0]['x'] + '_' + snake.snakes[0]['y']).addClass("bgBlack");
+        if(start){
+            timer = setTimeout(move,degree);
+        }
+        //console.log(snake);
+    }
+    //键盘按钮事件
+    function keyDirection(e){
+        var evt = e||window.event;
+        var key = evt.which||evt.keyCode;
+        var notDo = false;
+        var snakeMoveD = snake.direction;
+        switch (key){
+            case 38:
+            case 87:
+                if(snake.direction === 'W'){
+                    notDo =true;
+                }else{
+                    snake.direction = "W";
+                }
+                break;
+            case 39:
+            case 68:
+                if(snake.direction === 'D'){
+                    notDo =true;
+                }else{
+                    snake.direction = "D";
+                }
+                break;
+            case 40:
+            case 83:
+                if(snake.direction === 'S'){
+                    notDo =true;
+                }else{
+                    snake.direction = "S";
+                }
+                break;
+            case 37:
+            case 65:
+                if(snake.direction === 'A'){
+                    notDo =true;
+                }else{
+                    snake.direction = "A";
+                }
+                break;
+        }
+        this.createCorner = function(){
+            corner[cornerNum] = {};
+            corner[cornerNum]['x'] = snake.snakes[0]["x"];
+            corner[cornerNum]['y'] = snake.snakes[0]["y"];
+            corner[cornerNum]["d"] = snake.direction;
+            cornerNum ++;
+        }
+        if(!notDo){
+            if(cornerNum>0){
+                if(corner[cornerNum-1]['x'] != snake.snakes[0]['x'] || corner[cornerNum-1]['y'] != snake.snakes[0]['y']){
+                    this.createCorner();
+                }else{
+                    snake.direction = snakeMoveD;
+                }
+            }else{
+                this.createCorner();
+            }
+        }
+        console.log(corner);
+    }
+    //获取拐点方向
+    function corners(x,y){
+        var _d;
+        for(var i in corner){
+            if(corner[i]["x"] === x & corner[i]["y"] === y){
+                _d = corner[i]["d"];
+            }
+        }
+        return _d;
+    }
+    //清除拐点
+    function clearCorner(x,y){
+        if(corner[0]["x"] === x && corner[0]["y"] === y){
+            corner.shift();
+            cornerNum = corner.length;
+        }
+    }
+    //检测结束
+    function checkDie(x,y){
+        if(x < 0 || x >= mapW || y < 0 || y >= mapH){
+            start = false;
+            $("#start").attr("disabled",true);
+            alert("Game Over!");
+        }
+        for(var i = 0; i < snake.snakes.length; i++){
+            if(x === snake.snakes[i]["x"] && y === snake.snakes[i]["y"]){
+                start = false;
+                $("#start").attr("disabled",true);
+                alert("Game Over!");
+            }
+        }
+    }
+    //吃
+    function eat(x,y){
+        if(preyX === x && preyY === y){
+            snake.snakes[snake.len] = {};
+            switch (snake.snakes[snake.len-1]["d"]){
+                case "W":
+                    snake.snakes[snake.len]['x'] = snake.snakes[snake.len-1]['x'];
+                    snake.snakes[snake.len]['y'] = snake.snakes[snake.len-1]['y']+1;
+                    break;
+                case "D":
+                    snake.snakes[snake.len]['x'] = snake.snakes[snake.len-1]['x']-1;
+                    snake.snakes[snake.len]['y'] = snake.snakes[snake.len-1]['y'];
+                    break;
+                case "S":
+                    snake.snakes[snake.len]['x'] = snake.snakes[snake.len-1]['x'];
+                    snake.snakes[snake.len]['y'] = snake.snakes[snake.len-1]['y']-1;
+                    break;
+                case "A":
+                    snake.snakes[snake.len]['x'] = snake.snakes[snake.len-1]['x']+1;
+                    snake.snakes[snake.len]['y'] = snake.snakes[snake.len-1]['y'];
+                    break;
+            }
+            //$("#mapItem_" + snake.snakes[snake.len]["x"] + "_" + snake.snakes[snake.len]["y"]).addClass("bgBlack");
+            snake.snakes[snake.len]['d'] = snake.snakes[snake.len-1]['d'];
+            snake.len ++;
+            $("#mapItem_" + preyX + "_" + preyY).removeClass("bgRed").addClass("bgBlack");
+            initPrey();
+            changeSpeed();
+        }
+    }
+
+    function changeSpeed(){
+        $("#core").html(parseInt($("#core").html()) + 10);
+        if(degree > 100){
+            degree -=50;
+        }
+    }
 
 </script>
 </html>
